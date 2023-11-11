@@ -1,4 +1,4 @@
-import express ,{Request,Response} from 'express'
+import express ,{NextFunction, Request,Response} from 'express'
 
 // import routes from '../router/routes'
 
@@ -8,8 +8,11 @@ const port=3000
 // app.use('/',routes)
 
 app.use(express.json())
-app.get('/',(req:Request,res:Response)=>{
-    res.send('Helllllllooooos')
+app.get('/:bookid/:Auth',(req:Request<{bookid:number,Auth:string},{},{name:string},{}>,res:Response)=>{
+    req.params.bookid
+    req.body.name
+    const Bookid=req.params
+    res.send(req.body.name);
 });
 
 app.post('/api/data',(req,res)=>{
@@ -37,6 +40,22 @@ app.route('/api/books')
     
 })
 
+//middlewares
+const middlewares=({name}:{name:string})=>
+    (req:Request,res:Response,next:NextFunction)=>{
+        res.locals.name=name
+        next();
+    }
+
+app.use(middlewares({name:'Benjamin Koshy'}));
+
+app.get('/middleware', (req:Request,res:Response)=>{
+
+    console.log(res.locals.name)
+    
+    res.send(res.locals.name)
+    
+})
 
 app.listen(port,()=>{
     console.log(`Server is running at http://localhost:3000/`)
