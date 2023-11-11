@@ -2,8 +2,12 @@
 
 import {Router,Express,Request,Response,NextFunction} from 'express'
 import {middlewares,handlebooks, throwsError} from './controllers/books.controller';
+import helmet from 'helmet'
 
 function routes(app:Express){
+
+//helmet is used to keep express apps secure
+app.use(helmet())
 
 app.get('/:bookid/:Auth',(req:Request<{bookid:number,Auth:string},{},{name:string},{}>,res:Response)=>{
     req.params.bookid
