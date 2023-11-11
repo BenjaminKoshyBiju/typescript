@@ -1,3 +1,4 @@
+import { error } from 'console';
 import express ,{NextFunction, Request,Response} from 'express'
 
 // import routes from '../router/routes'
@@ -40,7 +41,7 @@ app.route('/api/books')
     
 })
 
-//middlewares
+// checking out middlewares
 const middlewares=({name}:{name:string})=>
     (req:Request,res:Response,next:NextFunction)=>{
         res.locals.name=name
@@ -56,6 +57,23 @@ app.get('/middleware', (req:Request,res:Response)=>{
     res.send(res.locals.name)
     
 })
+// Handling Async Errors 
+async function throwsError(){
+    throw new Error('Error found!')
+}
+app.get('/errors',async(req,res)=>{
+
+//Wrap all the Async code in Try Catch and send Appopriate Error messages
+
+    try{                    
+        await throwsError();
+        res.sendStatus(200)
+    }
+    catch(e){
+        res.status(400).send('Error Detected')
+    }
+    
+});
 
 app.listen(port,()=>{
     console.log(`Server is running at http://localhost:3000/`)
