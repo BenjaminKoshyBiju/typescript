@@ -6,7 +6,7 @@ import helmet from 'helmet'
 
 function routes(app:Express){
 
-//helmet is used to keep express apps secure
+//helmet is used to keep express apps secure, it adds headers good for security
 app.use(helmet())
 
 app.get('/:bookid/:Auth',(req:Request<{bookid:number,Auth:string},{},{name:string},{}>,res:Response)=>{
